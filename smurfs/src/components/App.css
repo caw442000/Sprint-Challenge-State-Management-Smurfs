@@ -1,5 +1,8 @@
 .App {
   text-align: center;
+  background-color: lightblue;
+  width: 1000px;
+  margin: 0 auto;
 }
 
 .App-logo {
@@ -21,7 +24,14 @@
 .App-intro {
   font-size: large;
 }
-
+a:link, a:visited {
+  background-color: blue;
+  color: white;
+  padding: 14px 25px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+}
 @keyframes App-logo-spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
