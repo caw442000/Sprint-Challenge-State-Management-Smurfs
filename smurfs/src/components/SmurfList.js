@@ -30,7 +30,7 @@ const SmurfListDiv = styled.div`
   `
 
 const SmurfList = props => {
-  const { smurfList } = useContext(SmurfContext)
+  const { smurfList, deleteSmurf } = useContext(SmurfContext)
   console.log("from smurf context", smurfList )
 
 
@@ -41,6 +41,7 @@ const SmurfList = props => {
           <h1>Name: {smurf.name}</h1>
           <p>Age: {smurf.age} </p>
           <p> Height: {smurf.height}</p>
+          <button onClick={() => deleteSmurf(smurf)}>Delete</button>
         </SmurfDiv>
       ))}
     </SmurfListDiv>

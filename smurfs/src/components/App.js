@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Axios from 'axios';
-import { BrowserRouter as Router, Route, Redirect} from 'react-router-dom';
+import { BrowserRouter as Router, Route, useHistory} from 'react-router-dom';
 
 import { SmurfContext } from '../contexts/SmurfContext';
 import { SmurfFormContext } from '../contexts/SmurfFormContext';
@@ -17,6 +17,9 @@ import "./App.css";
 
 
 const App = (props) => {
+ 
+  // tried to useHistory to do a push to homepage after adding
+  // const history = useHistory();
   const [ smurf, setSmurf ] = useState({
     name: "", 
     age: "", 
@@ -53,9 +56,19 @@ const App = (props) => {
 
   };
 
+  const deleteSmurf = smurf => {
+
+    Axios
+        .delete(`http://localhost:3333/smurfs/${smurf.id}`)
+        .then(res => {
+          alert("Deleted Smurf")
+        })
+        .catch(err => alert("Error couldn't delete: ", err))
+        .finally(() => window.location.reload())
+}
+
   const addSmurf = smurf => {
     //add new smurf to smurf list
-    smurf.preventDefault();
     const newSmurf = {
       id: cuid(),
       name: smurf.name, 
@@ -84,7 +97,7 @@ const App = (props) => {
 
   return (
     <div className="App">
-      <SmurfContext.Provider value= {{ smurfList }}>
+      <SmurfContext.Provider value= {{ smurfList, deleteSmurf }}>
       <SmurfFormContext.Provider value= {{ handleChanges, smurf, submitForm}}>
         <Router>
           <Header />

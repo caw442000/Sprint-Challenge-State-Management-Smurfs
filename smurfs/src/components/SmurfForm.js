@@ -7,6 +7,8 @@ const SmurfForm = props => {
 
 
 
+
+
   return (
     <form onSubmit= {submitForm}>
 
