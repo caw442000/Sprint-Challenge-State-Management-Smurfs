@@ -1,26 +1,31 @@
 import React, { useState, useEffect } from "react";
 import Axios from 'axios';
+import { BrowserRouter as Router, Route, Redirect} from 'react-router-dom';
+
 import { SmurfContext } from '../contexts/SmurfContext';
 import { SmurfFormContext } from '../contexts/SmurfFormContext';
 import cuid from 'cuid';
 
 //components
 import SmurfList  from './SmurfList'
-import SmurfForm from "./SmurfForm";
+import SmurfForm from './SmurfForm';
+import Header from './Header'
 
 import "./App.css";
 
 
 
 
-const App = () => {
+const App = (props) => {
   const [ smurf, setSmurf ] = useState({
     name: "", 
     age: "", 
     height: "",
   });
+  
 
   const [ smurfList, setSmurfList ] = useState([]);
+  
 
 
   useEffect(()=> {
@@ -50,6 +55,7 @@ const App = () => {
 
   const addSmurf = smurf => {
     //add new smurf to smurf list
+    smurf.preventDefault();
     const newSmurf = {
       id: cuid(),
       name: smurf.name, 
@@ -61,23 +67,34 @@ const App = () => {
       .post('http://localhost:3333/smurfs', newSmurf)
       .then(res => {
         console.log("this is the response", res);
-        setSmurfList(res.data)
+        // setSmurfList(res.data);
+        props.history.push("/")
+        
+
   
       })
       .catch(err => {
         console.error("there was an error: ", err);
       })
 
-    setSmurfList([...smurfList, newSmurf]);
+    // setSmurfList([...smurfList, newSmurf]);
     console.log("this is smurfList", smurfList)
+    
   }
 
   return (
     <div className="App">
       <SmurfContext.Provider value= {{ smurfList }}>
       <SmurfFormContext.Provider value= {{ handleChanges, smurf, submitForm}}>
-        <SmurfList />
-        <SmurfForm />
+        <Router>
+          <Header />
+          <Route exact path="/">
+            <SmurfList />
+          </Route>
+          <Route path="/addsmurf">
+            <SmurfForm />
+          </Route>
+        </Router>
       </SmurfFormContext.Provider>
       </SmurfContext.Provider>
     </div>
